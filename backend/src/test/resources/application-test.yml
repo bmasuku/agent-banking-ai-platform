@@ -1,0 +1,14 @@
+app:
+  ai:
+    enabled: false
+  scheduling:
+    enabled: false
+  demo:
+    seed-on-startup: true
+    history-days: 4
+
+logging:
+  level:
+    com.agentbanking: INFO
+    org.testcontainers: WARN
+    com.github.dockerjava: WARN

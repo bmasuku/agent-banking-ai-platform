@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "IBM Plex Sans", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", "Times New Roman", serif;
+  --color-forest: #0b3d2e;
+  --color-forest-deep: #072a20;
+  --color-forest-soft: #1a5c45;
+  --color-mint: #e8f5f0;
+  --color-mint-strong: #c8e6d9;
+  --color-sand: #f4f1ea;
+  --color-sand-deep: #e8e2d6;
+  --color-ink: #14201b;
+  --color-ink-muted: #5c6b64;
+  --color-ink-faint: #8a968f;
+  --color-line: #d5ddd8;
+  --color-danger: #b42318;
+  --color-danger-soft: #fee4e2;
+  --color-warning: #b54708;
+  --color-warning-soft: #fef0c7;
+  --color-success: #027a48;
+  --color-success-soft: #d1fadf;
+  --color-info: #175cd3;
+  --color-info-soft: #d1e9ff;
+  --color-gold: #c9a227;
+  --color-background: #f4f1ea;
+  --color-foreground: #14201b;
+  --color-card: #ffffff;
+  --color-primary: #0b3d2e;
+  --color-primary-foreground: #ffffff;
+  --color-muted: #e8e2d6;
+  --color-muted-foreground: #5c6b64;
+  --color-border: #d5ddd8;
+  --color-ring: #1a5c45;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body,
+  #root {
+    @apply min-h-full;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    background-image:
+      radial-gradient(circle at top left, rgba(200, 230, 217, 0.55), transparent 40%),
+      linear-gradient(180deg, #f7f4ee 0%, #f0ebe2 100%);
+  }
+}

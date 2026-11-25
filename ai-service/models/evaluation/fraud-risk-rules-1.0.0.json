@@ -1,0 +1,20 @@
+{
+  "model": "fraud-risk-rules",
+  "version": "1.0.0",
+  "method": "DETERMINISTIC_RULES",
+  "is_trained_model": false,
+  "dataset": "fraud_samples.csv",
+  "n": 400,
+  "positive_rate": 0.07,
+  "auc_risk_score": 0.9178,
+  "threshold_risk_score": 60,
+  "precision": 0.3333,
+  "recall": 0.4643,
+  "confusion": {
+    "tp": 13,
+    "fp": 26,
+    "tn": 346,
+    "fn": 15
+  },
+  "notes": "Synthetic generative labels independent of the rule engine."
+}

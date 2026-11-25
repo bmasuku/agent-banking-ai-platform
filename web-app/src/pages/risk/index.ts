@@ -1,0 +1,6 @@
+export { AgentRiskPage } from './AgentRiskPage'
+export { FlaggedTransactionsPage } from './FlaggedTransactionsPage'
+export { FraudDetailPage } from './FraudDetailPage'
+export { InvestigationDetailPage } from './InvestigationDetailPage'
+export { InvestigationsPage } from './InvestigationsPage'
+export { RiskDashboardPage } from './RiskDashboardPage'

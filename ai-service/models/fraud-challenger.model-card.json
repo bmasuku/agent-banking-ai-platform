@@ -1,0 +1,29 @@
+{
+  "name": "fraud-challenger-gbdt",
+  "version": "0.1.0",
+  "serving": false,
+  "is_trained_model": true,
+  "description": "Experimental GradientBoostingClassifier trained on synthetic samples only. Not wired into any API. Do not use for decisions.",
+  "artefact": "fraud-challenger.joblib",
+  "features": [
+    "amount",
+    "amount_z_score",
+    "amount_to_avg_ratio",
+    "agent_tx_count_1h",
+    "agent_tx_count_24h",
+    "agent_history_count_30d",
+    "near_reporting_threshold",
+    "near_threshold_count_1h",
+    "off_hours",
+    "customer_tx_count_24h",
+    "customer_distinct_agents_24h",
+    "prior_flagged_90d",
+    "confirmed_fraud_count"
+  ],
+  "evaluation": {
+    "auc": 1.0,
+    "n_train": 280,
+    "n_test": 120,
+    "dataset": "synthetic fraud_samples.csv"
+  }
+}

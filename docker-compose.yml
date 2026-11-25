@@ -1,0 +1,120 @@
+# Local development / demonstration stack.
+# Usage: cp .env.example .env && ./start.sh
+name: agent-banking
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: agent-banking-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-agent_banking}
+      POSTGRES_USER: ${POSTGRES_USER:-agent_banking}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "${POSTGRES_PORT:-55432}:5432"
+    volumes:
+      - agent_banking_pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+
+  ai:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    image: agent-banking-ai:local
+    container_name: agent-banking-ai
+    environment:
+      AI_ENVIRONMENT: docker
+      AI_INTERNAL_API_KEY: ${AI_SERVICE_API_KEY:?Set AI_SERVICE_API_KEY in .env}
+      AI_DATABASE_URL: sqlite:////data/ai_governance.db
+      AI_BACKEND_BASE_URL: http://backend:8080
+      AI_TIMEZONE: ${APP_TIMEZONE:-Africa/Harare}
+      AI_LLM_PROVIDER: ${AI_LLM_PROVIDER:-none}
+      AI_LLM_API_KEY: ${AI_LLM_API_KEY:-}
+      AI_LLM_BASE_URL: ${AI_LLM_BASE_URL:-https://api.openai.com/v1}
+      AI_LLM_MODEL: ${AI_LLM_MODEL:-gpt-4o-mini}
+    ports:
+      - "${AI_PORT:-8000}:8000"
+    volumes:
+      - agent_banking_ai_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 25s
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: agent-banking-backend:local
+    container_name: agent-banking-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+      ai:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: "8080"
+      DB_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-agent_banking}
+      DB_USERNAME: ${POSTGRES_USER:-agent_banking}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env}
+      JWT_ACCESS_TTL: ${JWT_ACCESS_TTL:-PT15M}
+      JWT_REFRESH_TTL: ${JWT_REFRESH_TTL:-P7D}
+      AI_SERVICE_ENABLED: ${AI_SERVICE_ENABLED:-true}
+      AI_SERVICE_URL: http://ai:8000
+      AI_SERVICE_API_KEY: ${AI_SERVICE_API_KEY:?Set AI_SERVICE_API_KEY in .env}
+      DEMO_SEED_ON_STARTUP: ${DEMO_SEED_ON_STARTUP:-true}
+      DEMO_DEFAULT_PASSWORD: ${DEMO_DEFAULT_PASSWORD:?Set DEMO_DEFAULT_PASSWORD in .env}
+      DEMO_HISTORY_DAYS: ${DEMO_HISTORY_DAYS:-14}
+      BOOTSTRAP_ADMIN_USERNAME: ${BOOTSTRAP_ADMIN_USERNAME:-admin}
+      BOOTSTRAP_ADMIN_EMAIL: ${BOOTSTRAP_ADMIN_EMAIL:-admin@agentbanking.local}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BOOTSTRAP_ADMIN_PASSWORD:?Set BOOTSTRAP_ADMIN_PASSWORD in .env}
+      APP_TIMEZONE: ${APP_TIMEZONE:-Africa/Harare}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost:8088,http://localhost:3000,http://localhost:8081,http://localhost:8082,http://localhost:19006,http://127.0.0.1:5173,http://127.0.0.1:8088}
+      SCHEDULING_ENABLED: ${SCHEDULING_ENABLED:-true}
+    ports:
+      - "${BACKEND_PORT:-18080}:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8080/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 90s
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ./web-app
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-/api/v1}
+    image: agent-banking-web:local
+    container_name: agent-banking-web
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "${WEB_PORT:-8088}:80"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    restart: unless-stopped
+
+volumes:
+  agent_banking_pgdata:
+    name: agent_banking_pgdata
+  agent_banking_ai_data:
+    name: agent_banking_ai_data

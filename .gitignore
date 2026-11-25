@@ -1,0 +1,38 @@
+# Secrets and local env
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# Logs and local run artifacts
+*.log
+/tmp/
+/logs/
+
+# Backend
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# AI
+ai-service/.venv/
+ai-service/**/__pycache__/
+ai-service/.pytest_cache/
+ai-service/data/
+ai-service/*.db
+
+# Web / mobile
+web-app/node_modules/
+web-app/dist/
+mobile-app/node_modules/
+mobile-app/.expo/
+mobile-app/dist/
+
+# Docker override local
+docker-compose.override.yml

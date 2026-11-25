@@ -1,0 +1,16 @@
+{
+  "model": "credit-scorecard",
+  "version": "1.0.0",
+  "method": "DETERMINISTIC_SCORECARD",
+  "is_trained_model": false,
+  "dataset": "credit_samples.csv",
+  "n": 400,
+  "positive_rate": 0.6175,
+  "auc_inverted_score": 0.9557,
+  "high_risk_threshold_score": 600,
+  "precision": 0.8146,
+  "recall": 0.996,
+  "mean_score": 409.3,
+  "rejected_share": 0.8675,
+  "notes": "Synthetic labels; scorecard points are expert-set, not fitted."
+}

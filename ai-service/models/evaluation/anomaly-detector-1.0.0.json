@@ -1,0 +1,10 @@
+{
+  "model": "anomaly-detector",
+  "version": "1.0.0",
+  "method": "STATISTICAL_AND_ISOLATION_FOREST",
+  "is_trained_model": false,
+  "dataset": "anomaly_samples.csv",
+  "n": 80,
+  "agreement_with_synthetic_label": 0.125,
+  "notes": "Isolation Forest is fitted per request on the agent's own baseline; agreement is a rough sanity check, not a trained-model metric."
+}

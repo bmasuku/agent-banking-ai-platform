@@ -1,0 +1,12 @@
+{
+  "model": "float-forecaster",
+  "version": "1.0.0",
+  "method": "STATISTICAL",
+  "is_trained_model": false,
+  "dataset": "forecast_hourly.csv",
+  "mae_model_efloat_net": 6.4943,
+  "mae_naive_last_day_efloat_net": 9.0827,
+  "improvement_vs_naive": 0.285,
+  "n_hourly_points": 192,
+  "notes": "Hold-out last day per agent; naive baseline repeats the previous day's hourly nets."
+}
