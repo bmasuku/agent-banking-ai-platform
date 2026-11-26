@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { errorMessage } from '@/api/client'
+import { BrandLogo, BrandMark } from '@/components/BrandLogo'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -45,19 +46,24 @@ export function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden p-6">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-14 bg-forest-deep" aria-hidden />
       <div
         className="pointer-events-none absolute inset-0 opacity-90"
         aria-hidden
         style={{
           backgroundImage:
-            'radial-gradient(ellipse at 15% 20%, rgba(26,92,69,0.18), transparent 45%), radial-gradient(ellipse at 85% 80%, rgba(200,230,217,0.7), transparent 40%)',
+            'radial-gradient(ellipse at 12% 18%, rgba(0,83,157,0.16), transparent 45%), radial-gradient(ellipse at 88% 78%, rgba(226,10,28,0.08), transparent 40%)',
         }}
       />
       <Card className="relative w-full max-w-md border-forest/15 shadow-lg shadow-forest/10">
-        <CardHeader className="space-y-3">
+        <CardHeader className="space-y-4">
+          <div className="flex items-center gap-3">
+            <BrandMark />
+            <BrandLogo />
+          </div>
           <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-forest">Staff operations</p>
-            <CardTitle className="mt-1 font-display text-3xl text-forest">Agent Banking</CardTitle>
+            <CardTitle className="mt-1 text-2xl font-semibold text-ink">Agent Banking Portal</CardTitle>
           </div>
           <CardDescription className="text-sm leading-relaxed">
             Sign in as Risk Officer, Finance Officer, or Admin. Role and permissions are assigned by the server —

@@ -27,12 +27,28 @@ public interface FloatExchangeRepository extends JpaRepository<FloatExchange, UU
 
     Optional<FloatExchange> findByIdempotencyKey(String idempotencyKey);
 
-    /** Columns: requester id, counterparty id. */
+    /** Columns: requester id, counterparty id (nullable for OPEN listings). */
     @Query("select e.requester.id, e.counterparty.id from FloatExchange e where e.id = :id")
     List<Object[]> findParticipants(@Param("id") UUID id);
 
-    @Query("select e.id from FloatExchange e where e.status = com.agentbanking.platform.exchange.ExchangeStatus.PENDING and e.expiresAt < :now")
+    @Query("""
+            select e.id from FloatExchange e
+            where e.status in (
+                com.agentbanking.platform.exchange.ExchangeStatus.PENDING,
+                com.agentbanking.platform.exchange.ExchangeStatus.OPEN
+            ) and e.expiresAt < :now
+            """)
     List<UUID> findExpiredPendingIds(@Param("now") Instant now);
+
+    @EntityGraph(attributePaths = {"requester", "requester.area", "counterparty"})
+    @Query("""
+            select e from FloatExchange e
+            where e.status = com.agentbanking.platform.exchange.ExchangeStatus.OPEN
+              and e.requester.area.id = :areaId
+              and e.expiresAt > :now
+            order by e.requestedAt desc
+            """)
+    List<FloatExchange> findOpenInArea(@Param("areaId") UUID areaId, @Param("now") Instant now);
 
     /** Columns: status, count, sum(amount). */
     @Query("""

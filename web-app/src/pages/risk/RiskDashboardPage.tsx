@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { riskLevelVariant } from './riskHelpers'
 
-const SEVERITY_COLORS = ['#b91c1c', '#c2410c', '#ca8a04', '#166534']
+const SEVERITY_COLORS = ['#e20a1c', '#c2410c', '#ca8a04', '#00539d']
 
 export function RiskDashboardPage() {
   const q = useQuery({ queryKey: ['risk', 'dashboard'], queryFn: () => riskApi.dashboard() })
@@ -109,7 +109,7 @@ export function RiskDashboardPage() {
                   <XAxis dataKey="name" tick={{ fontSize: 11 }} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
                   <Tooltip />
-                  <Bar dataKey="value" fill="#1f4d3c" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="value" fill="#00539d" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             )}

@@ -75,7 +75,7 @@ export function AiMonitoringPage() {
                 <XAxis dataKey="kind" tick={{ fontSize: 11 }} />
                 <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
                 <Tooltip />
-                <Bar dataKey="count" fill="#1d6b4f" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="count" fill="#00539d" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

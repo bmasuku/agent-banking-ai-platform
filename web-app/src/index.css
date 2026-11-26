@@ -1,37 +1,40 @@
 @import "tailwindcss";
 
+/* EcoCash brand skin — colours sampled from www.ecocash.co.zw logo (#00539D / #E20A1C) */
 @theme {
-  --font-sans: "IBM Plex Sans", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Fraunces", "Times New Roman", serif;
-  --color-forest: #0b3d2e;
-  --color-forest-deep: #072a20;
-  --color-forest-soft: #1a5c45;
-  --color-mint: #e8f5f0;
-  --color-mint-strong: #c8e6d9;
-  --color-sand: #f4f1ea;
-  --color-sand-deep: #e8e2d6;
-  --color-ink: #14201b;
-  --color-ink-muted: #5c6b64;
-  --color-ink-faint: #8a968f;
-  --color-line: #d5ddd8;
-  --color-danger: #b42318;
-  --color-danger-soft: #fee4e2;
-  --color-warning: #b54708;
-  --color-warning-soft: #fef0c7;
+  --font-sans: "Poppins", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Poppins", "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --color-forest: #00539d;
+  --color-forest-deep: #003d75;
+  --color-forest-soft: #1a6bb5;
+  --color-mint: #e8f1fa;
+  --color-mint-strong: #c5d9f0;
+  --color-sand: #f5f7fa;
+  --color-sand-deep: #e8ecf2;
+  --color-ink: #0b1f33;
+  --color-ink-muted: #5a6b7d;
+  --color-ink-faint: #8a97a6;
+  --color-line: #d5dde6;
+  --color-danger: #e20a1c;
+  --color-danger-soft: #fde8ea;
+  --color-warning: #c2410c;
+  --color-warning-soft: #ffedd5;
   --color-success: #027a48;
   --color-success-soft: #d1fadf;
-  --color-info: #175cd3;
-  --color-info-soft: #d1e9ff;
-  --color-gold: #c9a227;
-  --color-background: #f4f1ea;
-  --color-foreground: #14201b;
+  --color-info: #0284c7;
+  --color-info-soft: #e0f2fe;
+  --color-gold: #e20a1c;
+  --color-ecocash-red: #e20a1c;
+  --color-ecocash-blue: #00539d;
+  --color-background: #f5f7fa;
+  --color-foreground: #0b1f33;
   --color-card: #ffffff;
-  --color-primary: #0b3d2e;
+  --color-primary: #00539d;
   --color-primary-foreground: #ffffff;
-  --color-muted: #e8e2d6;
-  --color-muted-foreground: #5c6b64;
-  --color-border: #d5ddd8;
-  --color-ring: #1a5c45;
+  --color-muted: #e8ecf2;
+  --color-muted-foreground: #5a6b7d;
+  --color-border: #d5dde6;
+  --color-ring: #1a6bb5;
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
@@ -51,7 +54,8 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     background-image:
-      radial-gradient(circle at top left, rgba(200, 230, 217, 0.55), transparent 40%),
-      linear-gradient(180deg, #f7f4ee 0%, #f0ebe2 100%);
+      radial-gradient(circle at top left, rgba(0, 83, 157, 0.08), transparent 42%),
+      radial-gradient(circle at top right, rgba(226, 10, 28, 0.05), transparent 36%),
+      linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%);
   }
 }

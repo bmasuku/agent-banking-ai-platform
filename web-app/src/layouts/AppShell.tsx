@@ -12,6 +12,7 @@ import {
   Users,
 } from 'lucide-react'
 import { NavLink, Outlet } from 'react-router-dom'
+import { BrandLogo } from '@/components/BrandLogo'
 import { Button } from '@/components/ui/button'
 import { useRealtime } from '@/hooks/useRealtime'
 import { cn } from '@/lib/utils'
@@ -52,10 +53,13 @@ export function AppShell() {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-[1600px]">
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-line bg-white/80 p-4 backdrop-blur md:flex">
-        <div className="mb-8 px-2">
-          <div className="font-display text-xl font-semibold text-forest">Agent Banking</div>
-          <p className="text-xs text-ink-muted">Staff operations portal</p>
+      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-line bg-white/90 p-4 backdrop-blur md:flex">
+        <div className="mb-8 space-y-2 px-2">
+          <BrandLogo />
+          <div>
+            <div className="text-sm font-semibold text-ink">Agent Banking</div>
+            <p className="text-xs text-ink-muted">Staff operations portal</p>
+          </div>
         </div>
         <nav className="flex flex-1 flex-col gap-1 overflow-y-auto">
           {items.map((item) => (
@@ -84,11 +88,11 @@ export function AppShell() {
         </div>
       </aside>
       <div className="flex flex-1 flex-col min-w-0">
-        <header className="border-b border-line bg-white/70 backdrop-blur md:hidden">
-          <div className="flex items-center justify-between px-4 py-3">
-            <div>
-              <div className="font-display text-lg font-semibold text-forest">Agent Banking</div>
-              <p className="text-[11px] text-ink-muted">{user?.role?.replace(/_/g, ' ')}</p>
+        <header className="border-b border-line bg-white/80 backdrop-blur md:hidden">
+          <div className="flex items-center justify-between gap-3 px-4 py-3">
+            <div className="min-w-0">
+              <BrandLogo compact />
+              <p className="mt-1 text-[11px] text-ink-muted">{user?.role?.replace(/_/g, ' ')}</p>
             </div>
             <Button variant="ghost" size="sm" onClick={() => void logout()}>
               Sign out

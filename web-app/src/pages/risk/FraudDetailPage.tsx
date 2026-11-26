@@ -291,7 +291,7 @@ export function FraudDetailPage() {
                 <XAxis type="number" tick={{ fontSize: 11 }} />
                 <YAxis type="category" dataKey="name" width={100} tick={{ fontSize: 10 }} />
                 <Tooltip />
-                <Bar dataKey="contribution" fill="#1f4d3c" />
+                <Bar dataKey="contribution" fill="#00539d" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

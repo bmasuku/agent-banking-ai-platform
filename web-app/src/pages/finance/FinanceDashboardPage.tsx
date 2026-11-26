@@ -167,10 +167,10 @@ export function FinanceDashboardPage() {
                     <YAxis tickFormatter={(v) => money(v).replace('USD ', '')} width={72} />
                     <Tooltip formatter={(v) => money(asNumber(v))} />
                     <Legend />
-                    <Bar dataKey="fees" name="Fee income" fill="#2d6a4f" />
-                    <Bar dataKey="interest" name="Interest income" fill="#40916c" />
-                    <Bar dataKey="commission" name="Commission expense" fill="#d4a373" />
-                    <Bar dataKey="net" name="Net income" fill="#1b4332" />
+                    <Bar dataKey="fees" name="Fee income" fill="#00539d" />
+                    <Bar dataKey="interest" name="Interest income" fill="#1a6bb5" />
+                    <Bar dataKey="commission" name="Commission expense" fill="#e20a1c" />
+                    <Bar dataKey="net" name="Net income" fill="#003d75" />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>

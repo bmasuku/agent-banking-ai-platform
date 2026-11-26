@@ -14,6 +14,10 @@ import com.agentbanking.platform.common.Paging;
 import com.agentbanking.platform.exchange.ExchangeStatus;
 import com.agentbanking.platform.exchange.FloatExchangeService;
 import com.agentbanking.platform.exchange.FloatExchangeService.ExchangeResponse;
+import com.agentbanking.platform.exchange.FloatExchangeService.OpenListingView;
+import com.agentbanking.platform.fieldvisit.FieldVisitService;
+import com.agentbanking.platform.fieldvisit.FieldVisitService.CreateFieldVisitRequest;
+import com.agentbanking.platform.fieldvisit.FieldVisitService.FieldVisitResponse;
 import com.agentbanking.platform.floatmgmt.FloatManagementService.ReplenishRequest;
 import com.agentbanking.platform.floatmgmt.FloatManagementService.ReplenishmentResponse;
 import com.agentbanking.platform.fraud.ReviewStatus;
@@ -73,6 +77,7 @@ public class AreaManagerController {
     private final ReportingService reportingService;
     private final AiFloatOptimisationService optimisationService;
     private final AiAreaForecastService areaForecastService;
+    private final FieldVisitService fieldVisitService;
 
     @GetMapping("/area")
     @Operation(summary = "My area with pool balances")
@@ -163,12 +168,18 @@ public class AreaManagerController {
     }
 
     @GetMapping("/exchanges")
-    @Operation(summary = "Monitor agent-to-agent float exchanges in my area")
+    @Operation(summary = "Monitor agent-to-agent float exchanges in my area (matched+ show identities; OPEN stay anonymous)")
     public PageResponse<ExchangeResponse> exchanges(@AuthenticationPrincipal UserPrincipal principal,
                                                     @RequestParam(required = false) ExchangeStatus status,
                                                     @RequestParam(defaultValue = "0") int page,
                                                     @RequestParam(defaultValue = "20") int size) {
-        return exchangeService.list(null, access.requireAreaId(principal), status, Paging.of(page, size, "requestedAt"));
+        return exchangeService.list(null, access.requireAreaId(principal), status, Paging.of(page, size, "requestedAt"), true);
+    }
+
+    @GetMapping("/exchanges/board")
+    @Operation(summary = "Anonymous open float requests in my area (no agent names)")
+    public List<OpenListingView> exchangeBoard(@AuthenticationPrincipal UserPrincipal principal) {
+        return exchangeService.areaBoard(access.requireAreaId(principal));
     }
 
     @GetMapping("/transactions")
@@ -199,6 +210,24 @@ public class AreaManagerController {
                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to) {
         return reportingService.areaReport(access.requireAreaId(principal), from, to);
+    }
+
+    @PostMapping("/field-visits")
+    @Operation(summary = "Record an area-manager field check-in / visit against an assigned agent")
+    public FieldVisitResponse createFieldVisit(@AuthenticationPrincipal UserPrincipal principal,
+                                               @Valid @RequestBody CreateFieldVisitRequest request) {
+        return fieldVisitService.create(principal, request);
+    }
+
+    @GetMapping("/field-visits")
+    @Operation(summary = "List field visits for my area")
+    public PageResponse<FieldVisitResponse> fieldVisits(@AuthenticationPrincipal UserPrincipal principal,
+                                                        @RequestParam(required = false) UUID agentId,
+                                                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
+                                                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to,
+                                                        @RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "20") int size) {
+        return fieldVisitService.list(access.requireAreaId(principal), agentId, from, to, Paging.of(page, size, "visitedAt"));
     }
 
     private void requireMyAgent(UserPrincipal principal, UUID agentId) {

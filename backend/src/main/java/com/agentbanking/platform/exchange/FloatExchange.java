@@ -35,7 +35,7 @@ public class FloatExchange extends BaseEntity {
     @JoinColumn(name = "requester_agent_id")
     private Agent requester;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "counterparty_agent_id")
     private Agent counterparty;
 
@@ -48,11 +48,29 @@ public class FloatExchange extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ExchangeStatus status = ExchangeStatus.PENDING;
+    private ExchangeStatus status = ExchangeStatus.OPEN;
 
     private String note;
 
     private String responseNote;
+
+    /** Public handle shown on the anonymous board (e.g. NX-4F2A). */
+    @Column(length = 16)
+    private String anonymityCode;
+
+    /** Shown privately to the requester; counterparty enters this to verify meetup. */
+    @Column(length = 12)
+    private String requesterVerifyToken;
+
+    /** Shown privately to the counterparty; requester enters this to verify meetup. */
+    @Column(length = 12)
+    private String counterpartyVerifyToken;
+
+    private Instant requesterVerifiedAt;
+
+    private Instant counterpartyVerifiedAt;
+
+    private Instant matchedAt;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "transaction_id")
