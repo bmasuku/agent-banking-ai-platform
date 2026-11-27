@@ -23,9 +23,17 @@ import type { AreaStackParamList, AreaTabParamList } from './types';
 const Tab = createBottomTabNavigator<AreaTabParamList>();
 const Stack = createNativeStackNavigator<AreaStackParamList>();
 
-function TabIcon({ label, focused }: { label: string; focused: boolean }) {
+function TabIcon({ label, color, size }: { label: string; color: string; size: number }) {
   return (
-    <Text style={{ fontSize: 11, fontWeight: focused ? '700' : '500', color: focused ? colors.forest : colors.inkFaint }}>
+    <Text
+      allowFontScaling={false}
+      style={{
+        fontSize: size,
+        lineHeight: size,
+        fontWeight: '600',
+        color,
+        textAlign: 'center',
+      }}>
       {label}
     </Text>
   );
@@ -38,15 +46,16 @@ function AreaTabs() {
         headerShown: false,
         tabBarActiveTintColor: colors.forest,
         tabBarInactiveTintColor: colors.inkFaint,
-        tabBarStyle: { backgroundColor: colors.white, borderTopColor: colors.line },
+        tabBarStyle: { backgroundColor: colors.white, borderTopColor: colors.line, paddingTop: 4 },
         tabBarLabelStyle: { ...typography.micro },
+        tabBarIconStyle: { width: 36, height: 32 },
       }}>
       <Tab.Screen
         name="AreaHome"
         component={AreaDashboardScreen}
         options={{
           title: 'Home',
-          tabBarIcon: ({ focused }) => <TabIcon label="⌂" focused={focused} />,
+          tabBarIcon: ({ color, size }) => <TabIcon label="⌂" color={color} size={size} />,
         }}
       />
       <Tab.Screen
@@ -54,7 +63,7 @@ function AreaTabs() {
         component={AreaAgentsHubScreen}
         options={{
           title: 'Agents',
-          tabBarIcon: ({ focused }) => <TabIcon label="☰" focused={focused} />,
+          tabBarIcon: ({ color, size }) => <TabIcon label="☰" color={color} size={size} />,
         }}
       />
       <Tab.Screen
@@ -62,7 +71,7 @@ function AreaTabs() {
         component={AreaMapScreen}
         options={{
           title: 'Map',
-          tabBarIcon: ({ focused }) => <TabIcon label="◎" focused={focused} />,
+          tabBarIcon: ({ color, size }) => <TabIcon label="◎" color={color} size={size} />,
         }}
       />
       <Tab.Screen
@@ -70,7 +79,7 @@ function AreaTabs() {
         component={AssistantScreen}
         options={{
           title: 'AI',
-          tabBarIcon: ({ focused }) => <TabIcon label="✦" focused={focused} />,
+          tabBarIcon: ({ color, size }) => <TabIcon label="✦" color={color} size={size} />,
         }}
       />
       <Tab.Screen
@@ -78,7 +87,7 @@ function AreaTabs() {
         component={AreaMoreScreen}
         options={{
           title: 'More',
-          tabBarIcon: ({ focused }) => <TabIcon label="⋯" focused={focused} />,
+          tabBarIcon: ({ color, size }) => <TabIcon label="⋯" color={color} size={size} />,
         }}
       />
     </Tab.Navigator>

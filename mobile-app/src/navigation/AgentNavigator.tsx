@@ -28,9 +28,17 @@ import type { AgentStackParamList, AgentTabParamList } from './types';
 const Tab = createBottomTabNavigator<AgentTabParamList>();
 const Stack = createNativeStackNavigator<AgentStackParamList>();
 
-function TabIcon({ label, focused }: { label: string; focused: boolean }) {
+function TabIcon({ label, color, size }: { label: string; color: string; size: number }) {
   return (
-    <Text style={{ fontSize: 11, fontWeight: focused ? '700' : '500', color: focused ? colors.forest : colors.inkFaint }}>
+    <Text
+      allowFontScaling={false}
+      style={{
+        fontSize: size,
+        lineHeight: size,
+        fontWeight: '600',
+        color,
+        textAlign: 'center',
+      }}>
       {label}
     </Text>
   );
@@ -43,15 +51,16 @@ function AgentTabs() {
         headerShown: false,
         tabBarActiveTintColor: colors.forest,
         tabBarInactiveTintColor: colors.inkFaint,
-        tabBarStyle: { backgroundColor: colors.white, borderTopColor: colors.line },
+        tabBarStyle: { backgroundColor: colors.white, borderTopColor: colors.line, paddingTop: 4 },
         tabBarLabelStyle: { ...typography.micro },
+        tabBarIconStyle: { width: 36, height: 32 },
       }}>
       <Tab.Screen
         name="AgentHome"
         component={AgentDashboardScreen}
         options={{
           title: 'Home',
-          tabBarIcon: ({ focused }) => <TabIcon label="⌂" focused={focused} />,
+          tabBarIcon: ({ color, size }) => <TabIcon label="⌂" color={color} size={size} />,
         }}
       />
       <Tab.Screen
@@ -59,7 +68,7 @@ function AgentTabs() {
         component={AgentOpsScreen}
         options={{
           title: 'Ops',
-          tabBarIcon: ({ focused }) => <TabIcon label="⇄" focused={focused} />,
+          tabBarIcon: ({ color, size }) => <TabIcon label="⇄" color={color} size={size} />,
         }}
       />
       <Tab.Screen
@@ -67,7 +76,7 @@ function AgentTabs() {
         component={TransactionHistoryScreen}
         options={{
           title: 'History',
-          tabBarIcon: ({ focused }) => <TabIcon label="☰" focused={focused} />,
+          tabBarIcon: ({ color, size }) => <TabIcon label="☰" color={color} size={size} />,
         }}
       />
       <Tab.Screen
@@ -75,7 +84,7 @@ function AgentTabs() {
         component={AssistantScreen}
         options={{
           title: 'AI',
-          tabBarIcon: ({ focused }) => <TabIcon label="✦" focused={focused} />,
+          tabBarIcon: ({ color, size }) => <TabIcon label="✦" color={color} size={size} />,
         }}
       />
       <Tab.Screen
@@ -83,7 +92,7 @@ function AgentTabs() {
         component={AgentMoreScreen}
         options={{
           title: 'More',
-          tabBarIcon: ({ focused }) => <TabIcon label="⋯" focused={focused} />,
+          tabBarIcon: ({ color, size }) => <TabIcon label="⋯" color={color} size={size} />,
         }}
       />
     </Tab.Navigator>
