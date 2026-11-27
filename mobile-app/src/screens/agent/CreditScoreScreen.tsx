@@ -48,7 +48,7 @@ export function CreditScoreScreen() {
           <View style={styles.metrics}>
             <MetricCard
               label="Score"
-              value={credit.score}
+              value={String(credit.score)}
               badge={credit.riskBand}
               tone="low"
               kind="derived"

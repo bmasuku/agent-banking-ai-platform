@@ -145,7 +145,7 @@ export function AgentDashboardScreen() {
           <View style={styles.metricCell}>
             <MetricCard
               label="Credit score"
-              value={creditQ.data?.score ?? '—'}
+              value={creditQ.data ? String(creditQ.data.score) : '—'}
               kind="derived"
               hint={creditQ.data ? `${creditQ.data.riskBand} · model-assisted` : undefined}
             />
