@@ -62,11 +62,11 @@ export function LoginPage() {
             <BrandLogo />
           </div>
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-forest">Staff operations</p>
-            <CardTitle className="mt-1 text-2xl font-semibold text-ink">Agent Banking Portal</CardTitle>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-forest">EcoCash</p>
+            <CardTitle className="mt-1 text-2xl font-semibold text-ink">AI FloatShield</CardTitle>
           </div>
           <CardDescription className="text-sm leading-relaxed">
-            Sign in as Risk Officer, Finance Officer, or Admin. Role and permissions are assigned by the server —
+            Keep agents liquid. Keep risk explainable. Sign in as Risk Officer, Finance Officer, or Admin —
             balances shown after login are live ledger data.
           </CardDescription>
         </CardHeader>

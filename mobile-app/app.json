@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "EcoCash Agent Banking",
+    "name": "AI FloatShield",
     "slug": "agent-banking-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -44,7 +44,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Allow Agent Banking to use your location for nearby agents and field check-ins."
+          "locationWhenInUsePermission": "Allow AI FloatShield to use your location for nearby agents and field check-ins."
         }
       ],
       [

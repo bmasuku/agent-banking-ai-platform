@@ -1,6 +1,8 @@
-# Agent Banking & Float Management Platform
+# AI FloatShield
 
-Local development and demonstration environment for the AI Digital Agent Banking platform: Spring Boot ledger APIs, FastAPI AI services, React staff portal, and Expo mobile apps for agents and area managers.
+Keep agents liquid. Keep risk explainable.
+
+Local development and demonstration environment for AI float rebalancing and fraud detection: Spring Boot ledger APIs, FastAPI AI services, React staff portal, and Expo mobile apps for agents and area managers.
 
 ## Architecture
 

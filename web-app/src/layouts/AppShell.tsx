@@ -57,8 +57,8 @@ export function AppShell() {
         <div className="mb-8 space-y-2 px-2">
           <BrandLogo />
           <div>
-            <div className="text-sm font-semibold text-ink">Agent Banking</div>
-            <p className="text-xs text-ink-muted">Staff operations portal</p>
+            <div className="text-sm font-semibold text-ink">AI FloatShield</div>
+            <p className="text-xs text-ink-muted">Keep agents liquid. Keep risk explainable.</p>
           </div>
         </div>
         <nav className="flex flex-1 flex-col gap-1 overflow-y-auto">

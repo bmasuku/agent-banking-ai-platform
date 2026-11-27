@@ -1,4 +1,4 @@
-# Agent Banking — Web Portal
+# AI FloatShield — Web Portal
 
 React + Vite staff portal for **RISK_OFFICER**, **FINANCE_OFFICER**, and **ADMIN**.
 

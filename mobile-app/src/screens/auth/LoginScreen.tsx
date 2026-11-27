@@ -31,10 +31,10 @@ export function LoginScreen() {
         <View style={styles.brand}>
           <BrandMark size={56} />
           <BrandLogo height={40} />
-          <Text style={styles.product}>Agent Banking</Text>
+          <Text style={styles.product}>AI FloatShield</Text>
           <Text style={styles.lede}>
-            Field operations for agents and area managers. Role is set by the server. Balances after login are live
-            ledger data.
+            Keep agents liquid. Keep risk explainable. Field operations for agents and area managers — role is set by
+            the server; balances after login are live ledger data.
           </Text>
         </View>
         {error ? <ErrorBanner message={error} /> : null}
