@@ -1,0 +1,63 @@
+{
+  "expo": {
+    "name": "EcoCash Agent Banking",
+    "slug": "agent-banking-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "agentbanking",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#00539D"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "local.agentbanking.mobile",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Location is used to find nearby agents for float exchange and for area-manager field check-ins. Tracking stops when you leave those screens.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Location is used only while you are actively checking in or discovering nearby agents."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#00539D",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "POST_NOTIFICATIONS"
+      ],
+      "package": "local.agentbanking.mobile",
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Allow Agent Banking to use your location for nearby agents and field check-ins."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#00539D"
+        }
+      ]
+    ],
+    "extra": {
+      "apiUrl": "http://localhost:18080/api/v1",
+      "apiUrlAndroidEmulator": "http://10.0.2.2:18080/api/v1"
+    }
+  }
+}
