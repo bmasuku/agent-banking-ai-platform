@@ -47,8 +47,10 @@ export const riskApi = {
     api.get<AgentRiskResponse[]>('/risk/agents', { params: { areaId } }).then((r) => r.data),
   setAgentStatus: (agentId: string, status: string, reason: string) =>
     api.post(`/risk/agents/${agentId}/status`, { status, reason }).then((r) => r.data),
-  anomalies: (agentId: string) =>
-    api.get(`/risk/agents/${agentId}/anomalies`).then((r) => r.data),
+  anomalies: (agentId: string, recentWindowHours = 72) =>
+    api
+      .get(`/risk/agents/${agentId}/anomalies`, { params: { recentWindowHours } })
+      .then((r) => r.data),
   peerComparison: (areaId: string) =>
     api.get('/risk/peer-comparison', { params: { areaId } }).then((r) => r.data),
 }

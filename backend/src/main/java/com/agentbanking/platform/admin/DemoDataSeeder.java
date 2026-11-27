@@ -299,6 +299,17 @@ public class DemoDataSeeder {
             log.debug("Pending exchange {}", ex.reference());
         }));
 
+        // Risk demo: habitual small-ticket customer at John's kiosk (daytime), then a sudden large
+        // off-hours withdrawal far from the registered outlet — stays PENDING_REVIEW for risk.
+        Agent john = agents.get(0);
+        Instant habitStart = at(today.minusDays(1), 10, 0);
+        Instant suddenFlagAt = at(today, 2, 45);
+        if (habitStart.isBefore(now.minus(Duration.ofMinutes(5)))
+                && suddenFlagAt.isBefore(now.minus(Duration.ofMinutes(5)))) {
+            run(new ScheduledEvent(habitStart, "sudden large withdrawal fraud flag (John)",
+                    () -> seedSuddenLargeWithdrawalFlag(john, manager, customers.get(0), today)));
+        }
+
         alignBalancesToTargets(agents, manager, now.minus(Duration.ofMinutes(30)));
 
         for (int i = 0; i < agents.size(); i++) {
@@ -392,10 +403,10 @@ public class DemoDataSeeder {
                     repayOutstanding(sarah, new BigDecimal("50.00"))));
         }
 
-        // David: structuring burst + investigation (no large top-ups — keep near target)
-        if (d == days - 1) {
-            addStructuringBurst(events, day, david, customers);
-            events.add(new ScheduledEvent(at(day, 9, 30), "David fraud investigation", () -> openInvestigation(david, risk)));
+        // David: structuring burst early today (so risk anomalies stay in the recent window) + investigation
+        if (d == days) {
+            addStructuringBurst(events, day, david, manager, customers);
+            events.add(new ScheduledEvent(at(day, 4, 30), "David fraud investigation", () -> openInvestigation(david, risk)));
         }
 
         if (d == days - 7 || (days < 9 && d == days - 2)) {
@@ -405,15 +416,62 @@ public class DemoDataSeeder {
     }
 
     /** David: deposits just below reporting thresholds, split across customers, in the early hours. */
-    private void addStructuringBurst(List<ScheduledEvent> events, LocalDate day, Agent agent, List<CustomerProfile> customers) {
+    private void addStructuringBurst(List<ScheduledEvent> events, LocalDate day, Agent agent, User manager,
+                                     List<CustomerProfile> customers) {
+        events.add(new ScheduledEvent(at(day, 1, 55), "David e-float for structuring demo", () ->
+                replenish(AppClock.now(), agent, manager, ReplenishmentType.EFLOAT, 6000,
+                        "Demo e-float so structuring deposits can complete and flag")));
         int[] amounts = {495, 498, 499, 997, 490, 499, 995};
         int[] customerIdx = {32, 33, 32, 34, 32, 33, 32};
         for (int i = 0; i < amounts.length; i++) {
             BigDecimal amount = BigDecimal.valueOf(amounts[i]).setScale(2, RoundingMode.UNNECESSARY);
             CustomerProfile customer = customers.get(customerIdx[i]);
             events.add(new ScheduledEvent(at(day, 2, 10 + i * 5), "structuring burst",
-                    () -> customerTransaction(agent, TransactionType.CASH_DEPOSIT, amount, customer, null, null)));
+                    () -> customerTransaction(agent, TransactionType.CASH_DEPOSIT, amount, customer,
+                            agent.getLatitude(), agent.getLongitude())));
         }
+    }
+
+    /**
+     * Builds a clear risk-officer demo case: a customer used to small daytime tickets suddenly
+     * withdraws a suspiciously large amount overnight, captured far from the agent's registered
+     * location. Expected: REVIEW / PENDING_REVIEW with amount-deviation + off-hours + location.
+     */
+    private void seedSuddenLargeWithdrawalFlag(Agent agent, User manager, CustomerProfile customer,
+                                               LocalDate spikeDay) {
+        LocalDate habitDay = AppClock.today();
+        Instant start = AppClock.now();
+        replenish(start, agent, manager, ReplenishmentType.EFLOAT, 3000,
+                "Demo e-float buffer for sudden-amount fraud story");
+        replenish(start.plusSeconds(45), agent, manager, ReplenishmentType.CASH, 2000,
+                "Demo cash buffer for sudden-amount fraud story");
+
+        // Daytime habit at the registered outlet — normal ticket sizes for John (~$30–$150).
+        // Enough wallet credit so the overnight $1,200 withdrawal is not auto-shrunk.
+        int[] smallDeposits = {
+                40, 55, 35, 60, 45, 50, 70, 30, 65, 45,
+                80, 50, 55, 40, 75, 90, 100, 85, 95, 110,
+                120, 100, 90, 80, 70
+        };
+        for (int i = 0; i < smallDeposits.length; i++) {
+            BigDecimal amount = BigDecimal.valueOf(smallDeposits[i]).setScale(2, RoundingMode.UNNECESSARY);
+            Instant when = at(habitDay, 9, 0).plus(Duration.ofMinutes(i * 12L));
+            AppClock.at(when, () -> customerTransaction(agent, TransactionType.CASH_DEPOSIT, amount, customer,
+                    agent.getLatitude(), agent.getLongitude()));
+        }
+        int[] smallWithdrawals = {20, 15, 25, 30, 18};
+        for (int i = 0; i < smallWithdrawals.length; i++) {
+            BigDecimal amount = BigDecimal.valueOf(smallWithdrawals[i]).setScale(2, RoundingMode.UNNECESSARY);
+            Instant when = at(habitDay, 16, 0).plus(Duration.ofMinutes(i * 12L));
+            AppClock.at(when, () -> customerTransaction(agent, TransactionType.CASH_WITHDRAWAL, amount, customer,
+                    agent.getLatitude(), agent.getLongitude()));
+        }
+
+        // Overnight spike at the outlet (~15× typical ticket). Cash-out is always in-person
+        // (distance agent↔customer = 0); risk comes from amount deviation + off-hours + rapid reuse.
+        Instant spikeAt = at(spikeDay, 2, 45);
+        AppClock.at(spikeAt, () -> customerTransaction(agent, TransactionType.CASH_WITHDRAWAL,
+                new BigDecimal("1200.00"), customer, agent.getLatitude(), agent.getLongitude()));
     }
 
     private void customerTransaction(Agent agent, TransactionType requestedType, BigDecimal requestedAmount,

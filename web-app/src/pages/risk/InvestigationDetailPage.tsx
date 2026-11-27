@@ -22,7 +22,14 @@ import { Label } from '@/components/ui/label'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Textarea } from '@/components/ui/textarea'
 import { money } from '@/lib/utils'
-import { formatInstant, normalizeInvestigationDetail, reviewStatusVariant, riskLevelVariant, selectClass } from './riskHelpers'
+import {
+  formatInstant,
+  normalizeInvestigationDetail,
+  reviewStatusLabel,
+  reviewStatusVariant,
+  riskLevelVariant,
+  selectClass,
+} from './riskHelpers'
 
 const STATUS_OPTIONS = ['OPEN', 'IN_PROGRESS', 'ESCALATED'] as const
 const OUTCOMES = ['CONFIRMED_FRAUD', 'POLICY_BREACH', 'NO_FRAUD_FOUND', 'INSUFFICIENT_EVIDENCE'] as const
@@ -169,7 +176,9 @@ export function InvestigationDetailPage() {
                     </TableCell>
                     <TableCell>{money(fc.amount, fc.currency)}</TableCell>
                     <TableCell>
-                      <Badge variant={reviewStatusVariant(fc.reviewStatus)}>{fc.reviewStatus}</Badge>
+                      <Badge variant={reviewStatusVariant(fc.reviewStatus)}>
+                        {reviewStatusLabel(fc.reviewStatus)}
+                      </Badge>
                     </TableCell>
                   </TableRow>
                 ))}

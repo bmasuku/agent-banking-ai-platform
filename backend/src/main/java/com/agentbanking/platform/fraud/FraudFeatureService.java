@@ -90,8 +90,15 @@ public class FraudFeatureService {
         long priorFlagged90d = fraudCheckRepository.countByAgent_IdAndFlaggedTrueAndCreatedAtAfter(agentId, ninetyDaysAgo);
         long confirmedFraud = fraudCheckRepository.countByAgent_IdAndReviewStatus(agentId, ReviewStatus.CONFIRMED_FRAUD);
 
+        BigDecimal txLat = transactionLatitude;
+        BigDecimal txLon = transactionLongitude;
         BigDecimal distance = null;
-        if (transactionLatitude != null && transactionLongitude != null
+        if (type.requiresInPersonCustomerPresence()) {
+            // Cash-in / cash-out: customer presents ID at the agent — always co-located.
+            txLat = agent.getLatitude();
+            txLon = agent.getLongitude();
+            distance = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+        } else if (transactionLatitude != null && transactionLongitude != null
                 && agent.getLatitude() != null && agent.getLongitude() != null) {
             distance = GeoUtils.distanceKm(agent.getLatitude(), agent.getLongitude(), transactionLatitude, transactionLongitude);
         }
@@ -100,7 +107,7 @@ public class FraudFeatureService {
                 count1h, count24h, history, avg, std, zScore, ratio, near, nearCount,
                 customerCount, customerAgents, customer.isEmpty(), agent.getRiskLevel().name(), agent.getCreditScore(),
                 openFlags, priorFlagged90d, confirmedFraud,
-                agent.getLatitude(), agent.getLongitude(), transactionLatitude, transactionLongitude, distance);
+                agent.getLatitude(), agent.getLongitude(), txLat, txLon, distance);
     }
 
     private static long toLong(Object value) {

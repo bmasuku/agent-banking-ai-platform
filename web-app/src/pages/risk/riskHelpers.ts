@@ -14,12 +14,29 @@ export function riskLevelVariant(level: RiskLevel): 'danger' | 'warning' | 'seco
   return 'secondary'
 }
 
-export function reviewStatusVariant(status: ReviewStatus): 'warning' | 'success' | 'danger' | 'info' | 'secondary' {
-  if (status === 'PENDING') return 'warning'
+export function reviewStatusVariant(status: ReviewStatus | string): 'warning' | 'success' | 'danger' | 'info' | 'secondary' {
+  if (status === 'PENDING_REVIEW') return 'warning'
   if (status === 'CLEARED') return 'success'
   if (status === 'CONFIRMED_FRAUD') return 'danger'
   if (status === 'UNDER_INVESTIGATION') return 'info'
   return 'secondary'
+}
+
+export function reviewStatusLabel(status: ReviewStatus | string): string {
+  switch (status) {
+    case 'PENDING_REVIEW':
+      return 'Pending review'
+    case 'UNDER_INVESTIGATION':
+      return 'Under investigation'
+    case 'CLEARED':
+      return 'Cleared'
+    case 'CONFIRMED_FRAUD':
+      return 'Confirmed fraud'
+    case 'NOT_REQUIRED':
+      return 'Not required'
+    default:
+      return status
+  }
 }
 
 export type NormalizedInvestigation = InvestigationDetail & {

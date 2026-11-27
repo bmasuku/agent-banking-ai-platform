@@ -13,7 +13,7 @@ public enum SimulationScenario {
     INSUFFICIENT_FLOAT("Deliberately oversized transfers that exceed agent e-float to trigger liquidity failures"),
     FLOAT_EXCHANGE_REQUESTS("Peer float exchange proposals between agents; only some are accepted, others stay pending"),
     SUSPICIOUS_TRANSACTIONS("Rapid, large outbound transfers at focused agents to exercise fraud and velocity rules"),
-    LOCATION_MISMATCH_ALERTS("Transactions geo-tagged far from the agent's registered location (e.g. Bulawayo) for location fraud rules"),
+    LOCATION_MISMATCH_ALERTS("Remote e-float sends geo-tagged far from the agent's registered location (e.g. Bulawayo); cash-in/out stay face-to-face"),
     LOAN_DEFAULT_PRESSURE("Float advance requests and penalty accrual to stress overdue repayment scenarios"),
     FLOAT_ADVANCE_REQUESTS("Agents submit float advance applications through the standard credit pipeline"),
     ACCUMULATE_COMMISSIONS("Many small customer transactions to build accrued commission balances"),

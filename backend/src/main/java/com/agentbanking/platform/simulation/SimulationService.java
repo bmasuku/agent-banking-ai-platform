@@ -309,8 +309,10 @@ public class SimulationService {
             String name = c == null ? "Geo Customer " + (i + 1) : c.getFullName();
             BigDecimal jitterLat = BULAWAYO_LAT.add(BigDecimal.valueOf(random.nextDouble() * 0.1 - 0.05)).setScale(6, RoundingMode.HALF_UP);
             BigDecimal jitterLon = BULAWAYO_LON.add(BigDecimal.valueOf(random.nextDouble() * 0.1 - 0.05)).setScale(6, RoundingMode.HALF_UP);
-            TransactionType type = i % 3 == 0 ? TransactionType.CASH_WITHDRAWAL : TransactionType.CASH_DEPOSIT;
-            transact(agent, type, amount, phone, name, keyPrefix + "geo" + i, tally, jitterLat, jitterLon);
+            // Cash-in/out are face-to-face (distance forced to 0). Location mismatch applies to
+            // remote e-float sends where the device GPS can diverge from the registered outlet.
+            transact(agent, TransactionType.AGENT_TRANSFER_TO_CUSTOMER, amount, phone, name,
+                    keyPrefix + "geo" + i, tally, jitterLat, jitterLon);
         }
     }
 

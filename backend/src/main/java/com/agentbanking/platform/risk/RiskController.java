@@ -152,9 +152,9 @@ public class RiskController {
     }
 
     @GetMapping("/agents/{agentId}/anomalies")
-    @Operation(summary = "AI anomaly detection for an agent (24h recent window by default)")
+    @Operation(summary = "AI anomaly detection for an agent (72h recent window by default), enriched with open fraud alerts")
     public Map<String, Object> agentAnomalies(@AuthenticationPrincipal UserPrincipal principal, @PathVariable UUID agentId,
-                                              @RequestParam(defaultValue = "24") int recentWindowHours) {
+                                              @RequestParam(defaultValue = "72") int recentWindowHours) {
         access.assertCanViewAgent(principal, agentService.require(agentId));
         return aiAnomalyService.detectAgentAnomalies(agentId, recentWindowHours);
     }

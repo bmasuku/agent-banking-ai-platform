@@ -21,4 +21,12 @@ public enum TransactionType {
     public boolean isCustomerTransaction() {
         return this == CASH_DEPOSIT || this == CASH_WITHDRAWAL || this == AGENT_TRANSFER_TO_CUSTOMER;
     }
+
+    /**
+     * Cash-in / cash-out require the customer to present identification to the agent in person,
+     * so agent–customer distance is always treated as zero.
+     */
+    public boolean requiresInPersonCustomerPresence() {
+        return this == CASH_DEPOSIT || this == CASH_WITHDRAWAL;
+    }
 }

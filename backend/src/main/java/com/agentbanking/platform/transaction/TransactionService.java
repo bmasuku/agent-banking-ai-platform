@@ -115,8 +115,15 @@ public class TransactionService {
         tx.setCurrency(properties.getCurrency());
         tx.setDescription(describe(cmd.type(), amount, customer, cmd.narration()));
         tx.setInitiatedBy(cmd.initiatorId());
-        tx.setLatitude(cmd.latitude());
-        tx.setLongitude(cmd.longitude());
+        // Cash-in / cash-out are always face-to-face (customer presents ID) — persist agent location.
+        if (cmd.type().requiresInPersonCustomerPresence()
+                && agent.getLatitude() != null && agent.getLongitude() != null) {
+            tx.setLatitude(agent.getLatitude());
+            tx.setLongitude(agent.getLongitude());
+        } else {
+            tx.setLatitude(cmd.latitude());
+            tx.setLongitude(cmd.longitude());
+        }
 
         FraudAssessment assessment = cmd.fraudAssessment();
         if (assessment.decision() == FraudDecision.BLOCK) {

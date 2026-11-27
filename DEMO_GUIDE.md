@@ -68,6 +68,7 @@ After reset, the ledger includes realistic history for:
 - John's full repayment (excellent history)
 - Sarah's large advance with only a token repayment (default narrative)
 - David's early-morning structuring burst and an open risk investigation
+- John's outlet: a habitual small-ticket customer who suddenly withdraws **$1,200** off-hours — left **PENDING_REVIEW** for the risk queue (cash-out is always in-person; flag is amount/off-hours pattern)
 - Float demand predictions and demo credit scores for each agent
 
 ---
@@ -99,11 +100,13 @@ After reset, the ledger includes realistic history for:
 3. Control Centre → **Float advance requests** / **Loan default pressure**.
 4. Show that new credit requires officer review (`MANUAL_REVIEW`).
 
-### 5. Fraud & risk (David)
+### 5. Fraud & risk (sudden large amount + David)
 
-1. Login `agent5` — credit **280**, high fraud risk.
-2. Risk (`risk`): open investigation case on structuring pattern.
-3. Control Centre → **Suspicious transactions** or **Location mismatch alerts**.
+1. Risk (`risk`) → **Flagged transactions** → filter **Pending review**.
+2. Open the **$1,200 cash out** at John's kiosk (`AGT-001`): customer normally did small tickets, then a sudden large off-hours withdrawal (in-person; risk is the amount/timing pattern).
+3. Login `agent5` — credit **280**, high fraud risk (structuring narrative).
+4. Risk: open investigation case on David's structuring pattern.
+5. Control Centre → **Suspicious transactions** or **Location mismatch alerts**.
 
 ### 6. Finance & commissions
 

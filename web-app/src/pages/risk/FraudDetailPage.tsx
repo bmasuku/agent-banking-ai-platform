@@ -25,7 +25,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Textarea } from '@/components/ui/textarea'
 import { money } from '@/lib/utils'
 import type { ReviewStatus } from '@/types/api'
-import { featureNumber, formatInstant, haversineKm, reviewStatusVariant, riskLevelVariant, selectClass } from './riskHelpers'
+import {
+  featureNumber,
+  formatInstant,
+  haversineKm,
+  reviewStatusLabel,
+  reviewStatusVariant,
+  riskLevelVariant,
+  selectClass,
+} from './riskHelpers'
 
 const REVIEW_OPTIONS: ReviewStatus[] = ['CLEARED', 'CONFIRMED_FRAUD', 'UNDER_INVESTIGATION']
 
@@ -151,7 +159,9 @@ export function FraudDetailPage() {
             <CardTitle className="text-sm text-ink-muted">Review status</CardTitle>
           </CardHeader>
           <CardContent>
-            <Badge variant={reviewStatusVariant(summary.reviewStatus)}>{summary.reviewStatus}</Badge>
+            <Badge variant={reviewStatusVariant(summary.reviewStatus)}>
+              {reviewStatusLabel(summary.reviewStatus)}
+            </Badge>
           </CardContent>
         </Card>
         <Card>

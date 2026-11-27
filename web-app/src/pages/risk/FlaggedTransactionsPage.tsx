@@ -14,10 +14,16 @@ import { Label } from '@/components/ui/label'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { downloadCsv, money } from '@/lib/utils'
 import type { ReviewStatus, RiskLevel } from '@/types/api'
-import { formatInstant, reviewStatusVariant, riskLevelVariant, selectClass } from './riskHelpers'
+import { formatInstant, reviewStatusLabel, reviewStatusVariant, riskLevelVariant, selectClass } from './riskHelpers'
 
 const PAGE_SIZE = 20
-const REVIEW_STATUSES: Array<ReviewStatus | ''> = ['', 'PENDING', 'CLEARED', 'CONFIRMED_FRAUD', 'UNDER_INVESTIGATION']
+const REVIEW_STATUSES: Array<ReviewStatus | ''> = [
+  '',
+  'PENDING_REVIEW',
+  'UNDER_INVESTIGATION',
+  'CLEARED',
+  'CONFIRMED_FRAUD',
+]
 const RISK_LEVELS: Array<RiskLevel | ''> = ['', 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL']
 
 export function FlaggedTransactionsPage() {
@@ -87,7 +93,7 @@ export function FlaggedTransactionsPage() {
             >
               {REVIEW_STATUSES.map((s) => (
                 <option key={s || 'all'} value={s}>
-                  {s || 'All statuses'}
+                  {s ? reviewStatusLabel(s) : 'All statuses'}
                 </option>
               ))}
             </select>
@@ -153,7 +159,9 @@ export function FlaggedTransactionsPage() {
                       </TableCell>
                       <TableCell>{row.decision}</TableCell>
                       <TableCell>
-                        <Badge variant={reviewStatusVariant(row.reviewStatus)}>{row.reviewStatus}</Badge>
+                        <Badge variant={reviewStatusVariant(row.reviewStatus)}>
+                          {reviewStatusLabel(row.reviewStatus)}
+                        </Badge>
                       </TableCell>
                       <TableCell className="text-xs text-ink-muted">{formatInstant(row.createdAt)}</TableCell>
                     </TableRow>

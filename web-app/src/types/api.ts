@@ -1,7 +1,12 @@
 export type Role = 'AGENT' | 'AREA_MANAGER' | 'RISK_OFFICER' | 'FINANCE_OFFICER' | 'ADMIN'
 
 export type RiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
-export type ReviewStatus = 'PENDING' | 'CLEARED' | 'CONFIRMED_FRAUD' | 'UNDER_INVESTIGATION'
+export type ReviewStatus =
+  | 'NOT_REQUIRED'
+  | 'PENDING_REVIEW'
+  | 'UNDER_INVESTIGATION'
+  | 'CLEARED'
+  | 'CONFIRMED_FRAUD'
 export type FraudDecision = 'ALLOW' | 'REVIEW' | 'BLOCK'
 
 export interface AuthenticatedUser {
@@ -53,6 +58,7 @@ export interface AgentRiskResponse {
   creditScore?: number
   openInvestigations?: number
   flaggedTransactions?: number
+  flaggedTransactions30d?: number
 }
 
 export interface FlaggedTransaction {
